@@ -3,6 +3,7 @@ package br.com.laudson.usuario_api.controller;
 import br.com.laudson.usuario_api.dto.CriarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.model.Usuario;
 import br.com.laudson.usuario_api.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public Usuario criarUsuario(@RequestBody CriarUsuarioRequestDTO request){
+    public Usuario criarUsuario(@Valid @RequestBody CriarUsuarioRequestDTO request){
         return usuarioService.criarUsuario(request);
     }
 }
