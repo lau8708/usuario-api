@@ -2,6 +2,7 @@ package br.com.laudson.usuario_api.service;
 
 import br.com.laudson.usuario_api.dto.CriarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioResponseDTO;
+import br.com.laudson.usuario_api.exception.EmailJaCadastradoException;
 import br.com.laudson.usuario_api.model.Usuario;
 import br.com.laudson.usuario_api.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,10 @@ public class UsuarioService {
     }
 
     public CriarUsuarioResponseDTO criarUsuario(CriarUsuarioRequestDTO request){
+
+        if (usuarioRepository.findByEmail(request.email()).isPresent()){
+            throw new EmailJaCadastradoException("Email já cadastrado");
+        }
 
         String senhaHash = passwordEncoder.encode(request.senha());
 
