@@ -2,11 +2,15 @@ package br.com.laudson.usuario_api.service;
 
 import br.com.laudson.usuario_api.dto.CriarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioResponseDTO;
+import br.com.laudson.usuario_api.dto.UsuarioResponseDTO;
 import br.com.laudson.usuario_api.exception.EmailJaCadastradoException;
+import br.com.laudson.usuario_api.exception.UsuarioNaoEncontradoException;
 import br.com.laudson.usuario_api.model.Usuario;
 import br.com.laudson.usuario_api.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -40,5 +44,26 @@ public class UsuarioService {
                 usuario.getNome(),
                 usuario.getEmail()
         );
+    }
+
+    public List<UsuarioResponseDTO> listarUsuarios(){
+        return usuarioRepository.findAll()
+                .stream()
+                .map(usuario -> new UsuarioResponseDTO(
+                        usuario.getId(),
+                        usuario.getNome(),
+                        usuario.getEmail()
+                ))
+                .toList();
+    }
+
+    public UsuarioResponseDTO buscarPorId(Long id){
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado"));
+
+        return new UsuarioResponseDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail());
     }
 }

@@ -33,4 +33,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(erros);
     }
+
+    @ExceptionHandler(UsuarioNaoEncontradoException.class)
+    public ResponseEntity<Map<String, String>> tratarUsuarioNaoEncontrado(UsuarioNaoEncontradoException exception){
+        Map<String, String> resposta = Map.of("mensagem", exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(resposta);
+    }
 }
