@@ -1,5 +1,6 @@
 package br.com.laudson.usuario_api.controller;
 
+import br.com.laudson.usuario_api.dto.AtualizarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioResponseDTO;
 import br.com.laudson.usuario_api.dto.UsuarioResponseDTO;
@@ -41,5 +42,14 @@ public class UsuarioController {
         UsuarioResponseDTO usuario = usuarioService.buscarPorId(id);
 
         return ResponseEntity.ok(usuario);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody AtualizarUsuarioRequestDTO request){
+
+        UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, request);
+
+        return ResponseEntity.ok(usuarioAtualizado);
+
     }
 }

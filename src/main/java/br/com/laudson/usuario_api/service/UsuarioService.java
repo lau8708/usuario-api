@@ -1,5 +1,6 @@
 package br.com.laudson.usuario_api.service;
 
+import br.com.laudson.usuario_api.dto.AtualizarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioRequestDTO;
 import br.com.laudson.usuario_api.dto.CriarUsuarioResponseDTO;
 import br.com.laudson.usuario_api.dto.UsuarioResponseDTO;
@@ -65,5 +66,30 @@ public class UsuarioService {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail());
+    }
+
+    public UsuarioResponseDTO atualizarUsuario(Long id, AtualizarUsuarioRequestDTO request){
+
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado"));
+
+        usuarioRepository.findByEmail(request.email())
+                .ifPresent(usuarioEncontrado -> {
+                    if (!usuarioEncontrado.getId().equals(id)){
+                        throw new EmailJaCadastradoException("Este e-mail já está cadastrado");
+                    }
+                });
+
+        usuario.setNome(request.nome());
+        usuario.setEmail(request.email());
+        usuario.setSenha(passwordEncoder.encode(request.senha()));
+
+        Usuario usuarioAtualizado = usuarioRepository.save(usuario);
+
+        return new UsuarioResponseDTO(
+                usuarioAtualizado.getId(),
+                usuarioAtualizado.getNome(),
+                usuarioAtualizado.getEmail()
+        );
     }
 }
