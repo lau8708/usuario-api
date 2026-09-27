@@ -92,4 +92,13 @@ public class UsuarioService {
                 usuarioAtualizado.getEmail()
         );
     }
+
+    public void deletarUsuario(Long id){
+
+        if (!usuarioRepository.existsById(id)){
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado");
+        }
+
+        usuarioRepository.deleteById(id);
+    }
 }
