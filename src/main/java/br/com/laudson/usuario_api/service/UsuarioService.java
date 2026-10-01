@@ -8,21 +8,18 @@ import br.com.laudson.usuario_api.exception.EmailJaCadastradoException;
 import br.com.laudson.usuario_api.exception.UsuarioNaoEncontradoException;
 import br.com.laudson.usuario_api.model.Usuario;
 import br.com.laudson.usuario_api.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public CriarUsuarioResponseDTO criarUsuario(CriarUsuarioRequestDTO request){
 
